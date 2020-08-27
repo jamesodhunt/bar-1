@@ -1,7 +1,9 @@
 name: Show "on pr" event details
 
 on:
-  [push, pull_request]:
+  push:
+
+  pull_request:
     types:
       - opened
       - reopened
