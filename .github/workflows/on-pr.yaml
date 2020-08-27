@@ -1,9 +1,7 @@
 name: Show "on pr" event details
 
 on:
-  push:
-
-  pull_request:
+  pull_request_target
     types:
       - opened
       - reopened
@@ -27,8 +25,9 @@ jobs:
           echo "::debug::Issue repo name: ${{ github.event.repository.name }}"
           echo "::debug::Issue repo URL: ${{ github.event.repository.html_url }}"
 
-          echo "::debug::Environment variables"
-          set|sort
+          # FIXME: BUG: causes action to fail! WTF!?!
+          #echo "::debug::Environment variables"
+          #set|sort
 
           echo "::debug::github context"
           echo "::debug::${{ toJson(github) }}"
