@@ -20,6 +20,11 @@ jobs:
           tar xz --strip-components=2 --wildcards '*/bin/hub' && \
           sudo install hub /usr/local/bin
 
+      - name: Checkout code to allow hub to communicate with the project
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.JODH_GITHUB_ACTIONS_TOKEN }}
+
       - name: Stop PR being merged unless it has atleast one backport label and one forward port label
         env:
           DEBUG: true
@@ -34,7 +39,7 @@ jobs:
           backport_labels=("needs-backport" "no-backport-needed")
           forward_port_labels=("needs-forward-port" "no-forward-port-needed")
 
-          labels=$(hub api "/repos/{owner}/{repo}/labels" | jq -r '.[] | .name')
+          labels=$(hub api "/repos/{owner}/{repo}/labels" | jq -r '.[].name')
 
           for label in ${backport_labels[@]} ${forward_port_labels[@]}
           do
