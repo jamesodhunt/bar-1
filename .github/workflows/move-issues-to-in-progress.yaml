@@ -91,7 +91,7 @@ jobs:
             echo "issue_url: '$issue_url'"
             issue=$(echo "$issue_url"| awk -F\/ '{print $NF}' || true)
 
-            [ -z "$issue_number" ] \
+            [ -z "$issue" ] \
               && echo "::error::Cannot determine issue number from $issue_url for PR $pr" \
               && exit 1
 
