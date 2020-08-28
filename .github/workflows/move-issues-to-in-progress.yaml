@@ -88,8 +88,10 @@ jobs:
 
           for issue_url in $linked_issue_urls
           do
-            echo "issue_url: '$issue_url'"
+            echo "FIXME: issue_url: '$issue_url'"
             issue=$(echo "$issue_url"| awk -F\/ '{print $NF}' || true)
+
+            echo "FIXME: issue: '$issue'"
 
             [ -z "$issue" ] \
               && echo "::error::Cannot determine issue number from $issue_url for PR $pr" \
