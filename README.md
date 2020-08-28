@@ -2,6 +2,7 @@
 
 Hi!
 
+boring
 foo
 
 foo
