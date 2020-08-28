@@ -6,6 +6,7 @@ on:
       - opened
       - reopened
       - labeled
+      - unlabeled
 
 jobs:
   check-pr-porting-labels:
