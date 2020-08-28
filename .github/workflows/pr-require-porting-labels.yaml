@@ -3,7 +3,8 @@ name: Ensure all PRs have the required porting labels
 on:
   pull_request:
     types:
-      - closed
+      - opened
+      - reopened
 
 jobs:
   check-pr-porting-labels:
