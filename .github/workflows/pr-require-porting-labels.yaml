@@ -67,9 +67,8 @@ jobs:
 
           for label in ${backport_labels[@]}
           do
-            echo "$pr_labels"|grep -qw "$label" \
-              && backport_labels_found+=("$label") \
-              && break
+            echo "$pr_labels" | grep -qw "$label" \
+              && backport_labels_found+=("$label")
           done
 
           [ "${#backport_labels_found[@]}" -eq 0 ] \
@@ -84,9 +83,8 @@ jobs:
 
           for label in ${forward_port_labels[@]}
           do
-            echo "$pr_labels"|grep -qw "$label" \
-              && forward_port_labels_found+=("$label") \
-              && break
+            echo "$pr_labels" | grep -qw "$label" \
+              && forward_port_labels_found+=("$label")
           done
 
           [ "${#forward_port_labels_found[@]}" -eq 0 ] \
@@ -97,4 +95,4 @@ jobs:
             && echo "::error::PR $pr has too many forward port labels set (${forward_port_labels_found[@]})" \
             && exit 1
 
-          echo "::debug::PR $pr has required porting labels ($backport_label, $forward_port_label)"
+          echo "::debug::PR $pr has required porting labels (${backport_labels_found[@]}, ${forward_port_labels_found[@]})"
