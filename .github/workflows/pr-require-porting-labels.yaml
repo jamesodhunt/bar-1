@@ -65,7 +65,7 @@ jobs:
           backport_label=""
           for label in ${backport_labels[@]}
           do
-            echo "$labels"|grep -qw "$label" \
+            echo "$pr_labels"|grep -qw "$label" \
               && backport_label="$label" \
               && break
           done
@@ -77,7 +77,7 @@ jobs:
           forward_port_label=""
           for label in ${forward_port_labels[@]}
           do
-            echo "$labels"|grep -qw "$label" \
+            echo "$pr_labels"|grep -qw "$label" \
               && forward_port_label="$label" \
               && break
           done
