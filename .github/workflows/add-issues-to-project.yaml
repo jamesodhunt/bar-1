@@ -27,7 +27,7 @@ jobs:
           # any existing github directory.
           pushd $(mktemp -d) &>/dev/null
           git clone --single-branch --depth 1 "https://github.com/jamesodhunt-org/.github" && cd .github/scripts
-          sudo install kata-hub.sh /usr/local/bin
+          sudo install hub-util.sh /usr/local/bin
           popd &>/dev/null
 
       - name: Checkout code to allow hub to communicate with the project
