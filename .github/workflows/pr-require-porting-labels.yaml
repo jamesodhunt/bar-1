@@ -83,7 +83,7 @@ jobs:
           done
 
           [ -z "$forward_port_label" ] \
-            && echo "::error::PR $pr missing a forward port label (${backport_labels[@]})" \
+            && echo "::error::PR $pr missing a forward port label (${forward_port_labels[@]})" \
             && exit 1
 
           echo "::debug::PR $pr has required porting labels ($backport_label, $forward_port_label)"
