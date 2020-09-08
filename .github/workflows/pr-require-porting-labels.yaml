@@ -55,12 +55,18 @@ jobs:
 
           pr_details=$(hub pr list -f '%I;%L%n' | grep "^${pr}" || true)
 
+          # FIXME:
+          echo "FIXME: pr_details: '$pr_details'"
+
           [ -z "$pr_details" ] && {
             echo "::error::Cannot determine details for PR $pr"
             exit 1
           }
 
           pr_labels=$(echo "$pr_details"|cut -d';' -f2|tr ',' ' ')
+
+          # FIXME:
+          echo "FIXME: pr_labels: '$pr_labels'"
 
           [ -z "$pr_labels" ] && {
             printf "::error::PR %s does not have required porting labels (expected one of '%s' and one of '%s')\n" \
@@ -77,6 +83,10 @@ jobs:
             echo "$pr_labels" | grep -qw "$label" \
               && backport_labels_found+=("$label")
           done
+
+          # FIXME:
+          echo "FIXME: backport_labels: '$backport_labels'"
+          echo "FIXME: backport_labels_found: '$backport_labels_found'"
 
           [ "${#backport_labels_found[@]}" -eq 0 ] && {
             printf "::error::PR %s missing a backport label (expected one of '%s')\n" \
@@ -101,6 +111,10 @@ jobs:
               && forward_port_labels_found+=("$label")
           done
 
+          # FIXME:
+          echo "FIXME: forward_port_labels: '$forward_port_labels'"
+          echo "FIXME: forward_port_labels_found: '$forward_port_labels_found'"
+
           [ "${#forward_port_labels_found[@]}" -eq 0 ] && {
             printf "::error::PR %s missing a forward port label (expected one of '%s')\n" \
                     "$pr" \
@@ -117,8 +131,8 @@ jobs:
           }
 
           # FIXME:
-          echo "::debug::backport_labels_found: '$backport_labels_found'"
-          echo "::debug::forward_port_labels_found: '$forward_port_labels_found'"
+          echo "FIXME: backport_labels_found: '$backport_labels_found'"
+          echo "FIXME: forward_port_labels_found: '$forward_port_labels_found'"
 
           [ "$backport_labels_found" = 'backport-pr' ] && \
           [ "$forward_port_labels_found" = 'forward-port-pr' ] && {
