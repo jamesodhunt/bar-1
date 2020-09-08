@@ -38,12 +38,12 @@ jobs:
           # Every PR must have two porting labels before it can be merged.
           # This is to ensure it is clear that a reviewer has considered both
           # porting directions.
-          backport_labels=("needs-backport" "no-backport-needed" "backport-pr")
-          forward_port_labels=("needs-forward-port" "no-forward-port-needed" "forward-port-pr")
+          backport_labels=('needs-backport' 'no-backport-needed' 'backport-pr')
+          forward_port_labels=('needs-forward-port' 'no-forward-port-needed' 'forward-port-pr')
 
           labels=$(hub api "/repos/{owner}/{repo}/labels" | jq -r '.[].name')
 
-          for label in ${backport_labels[@]} ${forward_port_labels[@]}
+          for label in $backport_labels $forward_port_labels
           do
             { echo "$labels"| egrep -q "^${label}$"; ret=$?; } || true
 
@@ -65,8 +65,8 @@ jobs:
           [ -z "$pr_labels" ] && {
             printf "::error::PR %s does not have required porting labels (expected one of '%s' and one of '%s')\n" \
                    "$pr" \
-                   $(echo "${backport_labels[@]}" | tr ' ' ',') \
-                   $(echo "${forward_port_labels[@]}" | tr ' ' ',')
+                   $(echo "$backport_labels" | tr ' ' ',') \
+                   $(echo "$forward_port_labels" | tr ' ' ',')
             exit 1
           }
 
@@ -81,15 +81,15 @@ jobs:
           [ "${#backport_labels_found[@]}" -eq 0 ] && {
             printf "::error::PR %s missing a backport label (expected one of '%s')\n" \
                    "$pr" \
-                   $(echo "${backport_labels[@]})" | tr ' ' ',')
+                   $(echo "$backport_labels" | tr ' ' ',')
             exit 1
           }
 
           [ "${#backport_labels_found[@]}" -gt 1 ] && {
             printf "::error::PR %s has too many backport labels (expected one of '%s', found '%s')\n" \
                    "$pr" \
-                   $(echo "${backport_labels[@]})" | tr ' ' ',') \
-                   $(echo "${backport_labels_found[@]}" | tr ' ' ',')
+                   $(echo "$backport_labels" | tr ' ' ',') \
+                   $(echo "$backport_labels_found" | tr ' ' ',')
             exit 1
           }
 
@@ -104,19 +104,28 @@ jobs:
           [ "${#forward_port_labels_found[@]}" -eq 0 ] && {
             printf "::error::PR %s missing a forward port label (expected one of '%s')\n" \
                     "$pr" \
-                    $(echo "${forward_port_labels[@]}" | tr ' ' ',')
+                    $(echo "$forward_port_labels" | tr ' ' ',')
             exit 1
           }
 
           [ "${#forward_port_labels_found[@]}" -gt 1 ] && {
             printf "::error::PR %s has too many forward port labels (expected one of '%s', found '%s')\n" \
                     "$pr" \
-                    $(echo "${forward_port_labels[@]})" | tr ' ' ',') \
-                    $(echo "${forward_port_labels_found[@]}" | tr ' ' ',')
+                    $(echo "$forward_port_labels" | tr ' ' ',') \
+                    $(echo "$forward_port_labels_found" | tr ' ' ',')
+            exit 1
+          }
+
+          [ "${backport_labels_found[@]}" = 'backport-pr' ] && \
+          [ "${forward_port_labels_found[@]}" = 'forward-port-pr' ] && { \
+            printf "::error::PR %s cannot be labelled as both backport ('%s') and forward port ('%s')\n" \
+                   "$pr" \
+                   "$backport_labels_found" \
+                   "$forward_port_labels_found"
             exit 1
           }
 
           printf "::debug::PR %s has required porting labels (backport label '%s', forward port label '%s')\n" \
                   "$pr" \
-                  "${backport_labels_found[@]})" \
-                  "${forward_port_labels_found[@]}"
+                  "$backport_labels_found" \
+                  "$forward_port_labels_found"
