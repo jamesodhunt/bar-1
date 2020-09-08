@@ -78,7 +78,7 @@ jobs:
 
           backport_labels_found=()
 
-          for label in $backport_labels
+          for label in ${backport_labels[@]}
           do
             echo "$pr_labels" | grep -qw "$label" \
               && backport_labels_found+=("$label")
@@ -105,7 +105,7 @@ jobs:
 
           forward_port_labels_found=()
 
-          for label in $forward_port_labels
+          for label in ${forward_port_labels[@]}
           do
             echo "$pr_labels" | grep -qw "$label" \
               && forward_port_labels_found+=("$label")
