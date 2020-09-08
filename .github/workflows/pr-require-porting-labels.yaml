@@ -1,4 +1,4 @@
-name: Ensure all PRs have the required porting labels
+name: Ensure PR has the required porting labels
 
 on:
   pull_request_target:
@@ -72,7 +72,7 @@ jobs:
 
           backport_labels_found=()
 
-          for label in ${backport_labels[@]}
+          for label in $backport_labels
           do
             echo "$pr_labels" | grep -qw "$label" \
               && backport_labels_found+=("$label")
@@ -95,7 +95,7 @@ jobs:
 
           forward_port_labels_found=()
 
-          for label in ${forward_port_labels[@]}
+          for label in $forward_port_labels
           do
             echo "$pr_labels" | grep -qw "$label" \
               && forward_port_labels_found+=("$label")
@@ -116,8 +116,8 @@ jobs:
             exit 1
           }
 
-          [ "${backport_labels_found[@]}" = 'backport-pr' ] && \
-          [ "${forward_port_labels_found[@]}" = 'forward-port-pr' ] && { \
+          [ "$backport_labels_found" = 'backport-pr' ] && \
+          [ "$forward_port_labels_found" = 'forward-port-pr' ] && { \
             printf "::error::PR %s cannot be labelled as both backport ('%s') and forward port ('%s')\n" \
                    "$pr" \
                    "$backport_labels_found" \
