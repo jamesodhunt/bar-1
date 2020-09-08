@@ -116,8 +116,12 @@ jobs:
             exit 1
           }
 
+          # FIXME:
+          echo "::debug::backport_labels_found: '$backport_labels_found'"
+          echo "::debug::forward_port_labels_found: '$forward_port_labels_found'"
+
           [ "$backport_labels_found" = 'backport-pr' ] && \
-          [ "$forward_port_labels_found" = 'forward-port-pr' ] && { \
+          [ "$forward_port_labels_found" = 'forward-port-pr' ] && {
             printf "::error::PR %s cannot be labelled as both backport ('%s') and forward port ('%s')\n" \
                    "$pr" \
                    "$backport_labels_found" \
